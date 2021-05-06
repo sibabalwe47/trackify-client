@@ -1,63 +1,41 @@
 import {
-    LOGIN_REQUEST,
-    LOGIN_FAIL,
-    LOGIN_SUCCESS,
-    REGISTER_FAIL,
-    REGISTER_REQUEST,
-    REGISTER_SUCCESS
-} from './types'
-import apiUrl from '../../../../config';
+  LOGIN_REQUEST,
+  LOGIN_FAIL,
+  LOGIN_SUCCESS,
+  REGISTER_FAIL,
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+} from "./types";
+import apiUrl from "../../../../config";
 
-export const registerUser = (userData) => async dispatch => {
-    try {
+export const registerUser = (userData) => async (dispatch) => {
+  const result = await fetch(`${apiUrl}/accounts/register`, {
+    method: "POST",
+    body: JSON.stringify(userData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-        // Begin request
-        dispatch({
-            type: REGISTER_REQUEST,
-        })
+  const resultData = await result.json();
 
-        // 1. Send request
-        const result = await fetch(`${apiUrl}/accounts/register`, {
-            method: "POST",
-            body: JSON.stringify(userData),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
+  if (resultData.success) {
+    dispatch({
+      type: REGISTER_SUCCESS,
+      payload: {
+        ...resultData,
+      },
+    });
+  } else {
+    dispatch({
+      type: REGISTER_FAIL,
+      payload: resultData.message,
+    });
+  }
 
-        const resultData = await result.json();
+  return resultData;
+};
 
-        console.log(resultData.message)
-        // 2. Process data
-        if(resultData.success) {
-            dispatch({
-                type: REGISTER_SUCCESS,
-                payload: resultData
-            })
-        } else {
-            dispatch({
-                type: REGISTER_FAIL,
-                payload: resultData.message ? resultData.message : "Error unknown"
-            })
-        }       
-
-        // 3. Dispatch an action type
-    //    if(resultData.success) {
-    //         dispatch({
-    //             type: LOGIN_SUCCESS,
-    //             payload: resultData
-    //         })
-    //    } else {
-    //         dispatch({
-    //             type: LOGIN_FAIL,
-    //             payload: 'Email or password incorrect.'
-    //         })
-    //    }
-
-       // Return data
-       return resultData;
-        
-    } catch (error) {
-        
-    }
-} 
+export const loginUser = (user) => async (dispatch) => {
+  console.log("Login action", user);
+};

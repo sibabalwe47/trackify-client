@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -19,14 +19,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import apiUrl from "../../config";
 
 const formSchema = yup.object({
-  Email: yup.string().required().min(3).max(50),
-  Password: yup.string().required().min(3).max(50),
+  emailAddress: yup.string().required().min(3).max(50),
+  password: yup.string().required().min(3).max(50),
 });
 
 const LoginScreen = (props) => {
-  const dispatch = useDispatch();
   const navData = props.navigation;
-
+  // Component level state
+  const [errorExists, setErrorExists] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  // Store action dispatcher
+  const dispatch = useDispatch();
+  // App state
+  const { error } = useSelector((state) => state.register);
+  const store = useSelector((state) => state);
+  console.log(store);
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <Formik
@@ -36,8 +43,28 @@ const LoginScreen = (props) => {
         }}
         validationSchema={formSchema}
         onSubmit={async (values) => {
-          // Dispatch login action
-          console.log(values);
+          // Get results of dispatched actions
+          const result = await dispatch(loginUser(values));
+          // Check success from server
+          if (result && !result.success) {
+            // Check error in state - to display error meessage
+            if (error && error) setErrorExists(!errorExists);
+            // Remove error message from screen
+            setTimeout(() => {
+              setErrorExists(false);
+            }, 4000);
+          } else {
+            // Display spinner
+            setIsLoading(!isLoading);
+            const token = await AsyncStorage.setItem("token", result.token);
+
+            console.log(result);
+            // Navigate to login screen
+            setTimeout(() => {
+              navData.navigate("Loader");
+              setIsLoading(!isLoading);
+            }, 5000);
+          }
         }}
       >
         {(props) => (
@@ -58,11 +85,11 @@ const LoginScreen = (props) => {
                 style={styles.input}
                 onChangeText={props.handleChange("emailAddress")}
                 onBlur={props.handleBlur("emailAddress")}
-                value={props.values.Email}
+                value={props.values.emailAddress}
                 placeholder="Email address"
               />
               <Text style={styles.error}>
-                {props.touched.Email && props.errors.Email}
+                {props.touched.emailAddress && props.errors.emailAddress}
               </Text>
             </View>
             <View style={styles.titleInput}>
@@ -70,17 +97,22 @@ const LoginScreen = (props) => {
                 style={styles.input}
                 onChangeText={props.handleChange("password")}
                 onBlur={props.handleBlur("password")}
-                value={props.values.Password}
+                value={props.values.password}
                 placeholder="Password"
                 secureTextEntry={true}
               />
               <Text style={styles.error}>
-                {props.touched.Password && props.errors.Password}
+                {props.touched.password && props.errors.password}
               </Text>
             </View>
             <TouchableOpacity>
               <Text style={styles.passwordText}>Forgot Password?</Text>
             </TouchableOpacity>
+            <View style={styles.serverErrorBlock}>
+              {errorExists == true && (
+                <Text style={styles.serverError}>{error}</Text>
+              )}
+            </View>
             <TouchableOpacity
               style={styles.button}
               onPress={props.handleSubmit}

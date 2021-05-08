@@ -37,5 +37,29 @@ export const registerUser = (userData) => async (dispatch) => {
 };
 
 export const loginUser = (user) => async (dispatch) => {
-  console.log("Login action", user);
+  const result = await fetch(`${apiUrl}/accounts/login`, {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const resultData = await result.json();
+
+  if (resultData.success) {
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: {
+        ...resultData,
+      },
+    });
+  } else {
+    dispatch({
+      type: LOGIN_FAIL,
+      payload: resultData.message,
+    });
+  }
+
+  return resultData;
 };

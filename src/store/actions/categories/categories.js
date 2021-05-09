@@ -1,7 +1,8 @@
 import {
-  FETFETCH_ALL_CATEGORIES_SUCCESS,
+  FETCH_ALL_CATEGORIES_SUCCESS,
   FETCH_ALL_CATEGORIES_FAIL,
 } from "./types";
+
 import { getToken } from "../../../helpers/getToken";
 import apiUrl from "../../../../config";
 
@@ -19,5 +20,15 @@ export const fetchAllCategories = () => async (dispatch) => {
   // Format items results
   const resultData = await result.json();
 
-  console.log(resultData);
+  if (resultData.success) {
+    dispatch({
+      type: FETCH_ALL_CATEGORIES_SUCCESS,
+      payload: resultData.data,
+    });
+  } else {
+    dispatch({
+      type: FETCH_ALL_CATEGORIES_FAIL,
+      payload: "No Data",
+    });
+  }
 };

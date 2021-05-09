@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // Actions
 import { fetchUser } from "../store/actions/user/user";
 import { fetchAllCategories } from "../store/actions/categories/categories";
@@ -12,23 +12,24 @@ import {
 
 const LoaderScreen = (props) => {
   const dispatch = useDispatch();
+  const store = useSelector((state) => state);
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem("token");
       if (value !== null) {
         Promise.all([
           // Get user
-          //dispatch(fetchUser()),
+          dispatch(fetchUser()),
           // Get categories
           dispatch(fetchAllCategories()),
           // Get monthly stat
-          //dispatch(fetchKeyPerformanceAreas()),
+          dispatch(fetchKeyPerformanceAreas()),
           // Key performance areas
           //dispatch(fetchMonthlyAverage()),
         ]).then((values) => {
-          // setTimeout(() => {
-          //   props.navigation.navigate("Dashboard");
-          // }, 5000);
+          setTimeout(() => {
+            props.navigation.navigate("Dashboard");
+          }, 5000);
         });
       } else {
         setTimeout(() => {
@@ -42,7 +43,7 @@ const LoaderScreen = (props) => {
 
   useEffect(() => {
     getData();
-  });
+  }, []);
 
   return (
     <View style={styles.container}>

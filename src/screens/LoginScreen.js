@@ -33,7 +33,6 @@ const LoginScreen = (props) => {
   // App state
   const { error } = useSelector((state) => state.register);
   const store = useSelector((state) => state);
-  console.log(store);
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <Formik
@@ -58,7 +57,6 @@ const LoginScreen = (props) => {
             setIsLoading(!isLoading);
             const token = await AsyncStorage.setItem("token", result.token);
 
-            console.log(result);
             // Navigate to login screen
             setTimeout(() => {
               navData.navigate("Loader");

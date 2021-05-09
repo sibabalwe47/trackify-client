@@ -8,6 +8,9 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import { ModalReducer } from "./reducers/ModalReducer";
 import { userRegisterReducer, userLoginReducer } from "./reducers/auth";
+import { categoryReducer } from "./reducers/categories";
+import { userReducer } from "./reducers/user";
+import { topHabitsStatsReducer } from "./reducers/streaks";
 
 /*
  *  Root reducer
@@ -16,7 +19,9 @@ import { userRegisterReducer, userLoginReducer } from "./reducers/auth";
 const rootReducer = combineReducers({
   modals: ModalReducer,
   register: userRegisterReducer,
-  user: userLoginReducer,
+  user: userReducer,
+  categories: categoryReducer,
+  topranked: topHabitsStatsReducer,
 });
 
 /*

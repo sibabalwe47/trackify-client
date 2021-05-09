@@ -1,9 +1,10 @@
-import { getToken } from "../../../helpers/getToken";
+import {} from "./types";
 
-export const fetchMonthlyAverage = () => async (dispatch) => {
-  console.log(await getToken());
-};
+import { getToken } from "../../../helpers/getToken";
+import apiUrl from "../../../../config";
+
+export const fetchMonthlyAverage = () => async (dispatch) => {};
 
 export const fetchKeyPerformanceAreas = () => async (dispatch) => {
-  console.log("Fetch key performance areas");
+  const token = await getToken();
 };

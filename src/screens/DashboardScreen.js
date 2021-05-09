@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   Modal,
   ImageBackground,
   Image,
+  BackHandler,
 } from "react-native";
 import Categories from "../components/Categories/Categories";
 import PieChart from "../components/Charts/PieChart";
@@ -17,6 +18,16 @@ import { useSelector } from "react-redux";
 
 const DashboardScreen = (props) => {
   const { firstName, avatar } = useSelector((state) => state.user.user);
+  const backAction = () => {
+    props.navigation.navigate("Dashboard");
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, []);
 
   return (
     <ScrollView

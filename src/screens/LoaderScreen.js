@@ -29,12 +29,12 @@ const LoaderScreen = (props) => {
         ]).then((values) => {
           setTimeout(() => {
             props.navigation.navigate("Dashboard");
-          }, 5000);
+          }, 3000);
         });
       } else {
         setTimeout(() => {
           props.navigation.navigate("Login");
-        }, 5000);
+        }, 3000);
       }
     } catch (e) {
       // error reading value

@@ -7,4 +7,5 @@ export const fetchMonthlyAverage = () => async (dispatch) => {};
 
 export const fetchKeyPerformanceAreas = () => async (dispatch) => {
   const token = await getToken();
+  //const result = await
 };

@@ -25,11 +25,9 @@ const LoaderScreen = (props) => {
           // Get monthly stat
           dispatch(fetchKeyPerformanceAreas()),
           // Key performance areas
-          //dispatch(fetchMonthlyAverage()),
+          dispatch(fetchMonthlyAverage()),
         ]).then((values) => {
-          setTimeout(() => {
-            props.navigation.navigate("Dashboard");
-          }, 3000);
+          props.navigation.navigate("Dashboard");
         });
       } else {
         setTimeout(() => {

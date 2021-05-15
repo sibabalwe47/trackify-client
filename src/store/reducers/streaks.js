@@ -31,8 +31,27 @@ export const topHabitsStatsReducer = (
   }
 };
 
-export const monthStatsReducer = (state = {}, action) => {
+export const monthStatsReducer = (
+  state = { streak: {}, error: null },
+  action
+) => {
   switch (action.type) {
+    case FETCH_MONTH_STATS_SUCCESS: {
+      return {
+        ...state,
+        streak: action.payload,
+      };
+    }
+
+    case FETCH_MONTH_STATS_FAIL: {
+      return {
+        ...state,
+        error: action.payload,
+      };
+    }
+
+    default:
+      return state;
   }
 };
 

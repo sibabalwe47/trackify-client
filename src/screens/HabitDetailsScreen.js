@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import Header from "../components/Header/Header";
 import PieChart from "../components/Charts/PieChart";
@@ -12,7 +13,24 @@ import { useDispatch } from "react-redux";
 import { showModal } from "../store/actions/modals/ModalActions";
 
 const HabitDetailsScreen = (props) => {
+  //console.log(props.route.params.id);
   const dispatch = useDispatch();
+
+  const backAction = () => {
+    if (props.route.name == "Dashboard") {
+      return true;
+    } else {
+      props.navigation.goBack();
+    }
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+    console.log(props);
+
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, []);
   return (
     <ScrollView
       style={styles.container}

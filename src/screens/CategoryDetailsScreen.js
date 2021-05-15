@@ -1,86 +1,92 @@
-import React from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import FloatingButton from '../components/Buttons/FloatingButton';
-import BarGraph from '../components/Charts/BarGraph/BarGraph';
-import HabitItems from '../components/Items/HabitItem'; 
-import Header from '../components/Header/Header';
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView, BackHandler } from "react-native";
+import FloatingButton from "../components/Buttons/FloatingButton";
+import BarGraph from "../components/Charts/BarGraph/BarGraph";
+import HabitItems from "../components/Items/HabitItem";
+import Header from "../components/Header/Header";
 
 const CategoriesDetailsScreen = (props) => {
-    return (
-        <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: 60}}>
-            <Header navigation={props.navigation} title={props.route.params.title && props.route.params.title} subtitle={props.route.params.subtitle && props.route.params.subtitle}/>
-            <View style={styles.graphArea}>
-                <BarGraph />
-            </View>
-            <View style={styles.items}>
-                <HabitItems navigation={props.navigation} title="Habits"/>                
-            </View>
-        </ScrollView>
-    )
-}
+  const backAction = () => {
+    if (props.route.name == "Dashboard") {
+      return true;
+    } else {
+      props.navigation.goBack();
+    }
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+    //console.log(props);
+
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, []);
+  return (
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 60 }}
+    >
+      <Header
+        navigation={props.navigation}
+        title={props.route.params.title && props.route.params.title}
+        subtitle={props.route.params.subtitle && props.route.params.subtitle}
+      />
+      <View style={styles.graphArea}>
+        <BarGraph />
+      </View>
+      <View style={styles.items}>
+        <HabitItems navigation={props.navigation} title="Habits" />
+      </View>
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f6f9ff',
-        paddingBottom: 60
-    },
-    header: {
-        marginTop: 60,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    headerLeft: {
-        width: '78%'
-    },
-    headerRight: {},
-    profileImage: {
-        width: 40,
-        height: 40,
-        backgroundColor: '#f5f5f5',
-        borderRadius: 100,
-        borderWidth: 3,
-        borderColor: '#6C63FF'
-    },
-    title:{
-        fontWeight: "700",
-        fontSize: 28,
-    },
-    subTitle: {
-        fontSize: 16,
-        color: '#6C63FF',
-        width: '100%',
-        marginTop: 10
-    },
-    items: {
-        marginTop: 50,
-        paddingLeft: 20,
-        paddingRight: 20
-    },
-    graphArea: {
-        paddingLeft: 20,
-        paddingRight: 20
-    }
+  container: {
+    flex: 1,
+    backgroundColor: "#f6f9ff",
+    paddingBottom: 60,
+  },
+  header: {
+    marginTop: 60,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  headerLeft: {
+    width: "78%",
+  },
+  headerRight: {},
+  profileImage: {
+    width: 40,
+    height: 40,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 100,
+    borderWidth: 3,
+    borderColor: "#6C63FF",
+  },
+  title: {
+    fontWeight: "700",
+    fontSize: 28,
+  },
+  subTitle: {
+    fontSize: 16,
+    color: "#6C63FF",
+    width: "100%",
+    marginTop: 10,
+  },
+  items: {
+    marginTop: 50,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  graphArea: {
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
 });
 
 export default CategoriesDetailsScreen;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React from 'react'
 // import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
@@ -95,7 +101,7 @@ export default CategoriesDetailsScreen;
 // import { useDispatch } from 'react-redux'
 // import TopRankedHabits from '../components/Items/HabitItem';
 // import { topRankedHabits } from '../helpers/data'
-// import CategoryItems from '../components/Items/CategoryItem'; 
+// import CategoryItems from '../components/Items/CategoryItem';
 
 // const CategoryDetailsScreen = (props) => {
 
@@ -114,7 +120,7 @@ export default CategoriesDetailsScreen;
 //                     </View>
 //                 </TouchableOpacity>
 //                 {/* <View style={styles.items}>
-//                     <CategoryItems navigation={props.navigation}/>                
+//                     <CategoryItems navigation={props.navigation}/>
 //                 </View> */}
 //                 <GlobalModal />
 //             </ScrollView>
@@ -131,7 +137,7 @@ export default CategoriesDetailsScreen;
 //     },
 //     graphArea: {
 //         padding: 20,
-//         marginTop: -30   
+//         marginTop: -30
 //     },
 //     button: {
 //         position: 'absolute',
@@ -151,6 +157,5 @@ export default CategoriesDetailsScreen;
 //         paddingHorizontal: 20
 //     }
 // })
-
 
 // export default CategoryDetailsScreen;

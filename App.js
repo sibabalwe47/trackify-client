@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import AppNavigator from './src/navigation/AppNavigation';
-import store from './src/store/store'
-import { Provider } from 'react-redux';
-import AppLoading from 'expo-app-loading';
-import { LogBox } from 'react-native';
+import React, { useEffect } from "react";
+import { StyleSheet, Text, View, BackHandler } from "react-native";
+import AppNavigator from "./src/navigation/AppNavigation";
+import store from "./src/store/store";
+import { Provider } from "react-redux";
+import AppLoading from "expo-app-loading";
+import { LogBox } from "react-native";
 
 import {
   useFonts,
@@ -26,10 +26,19 @@ import {
   Montserrat_800ExtraBold_Italic,
   Montserrat_900Black,
   Montserrat_900Black_Italic,
-} from '@expo-google-fonts/montserrat';
+} from "@expo-google-fonts/montserrat";
 
+export default function App(props) {
+  const backAction = () => {
+    return true;
+  };
 
-export default function App() {
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, []);
 
   let [fontsLoaded] = useFonts({
     Montserrat_100Thin,
@@ -50,7 +59,7 @@ export default function App() {
     Montserrat_800ExtraBold_Italic,
     Montserrat_900Black,
     Montserrat_900Black_Italic,
-  })
+  });
   if (!fontsLoaded) {
     return null;
   }
@@ -65,8 +74,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

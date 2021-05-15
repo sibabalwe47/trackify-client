@@ -18,12 +18,21 @@ import { useSelector } from "react-redux";
 
 const DashboardScreen = (props) => {
   const { firstName, avatar } = useSelector((state) => state.user.user);
+  const { habits } = useSelector((state) => state.topranked);
+
+  //console.log(useSelector((state) => state));
+
   const backAction = () => {
-    props.navigation.navigate("Dashboard");
+    if (props.route.name == "Dashboard") {
+      return true;
+    } else {
+      props.navigation.goBack();
+    }
   };
 
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", backAction);
+    //console.log(props);
 
     return () =>
       BackHandler.removeEventListener("hardwareBackPress", backAction);
@@ -57,8 +66,8 @@ const DashboardScreen = (props) => {
         <Categories navigation={props.navigation} />
       </View>
       <View style={styles.topRankedArea}>
-        {topRankedHabits && topRankedHabits.length == 0 && <PlaceHolder />}
-        {topRankedHabits && topRankedHabits.length > 0 && (
+        {habits && habits.length == 0 && <PlaceHolder />}
+        {habits && habits.length > 0 && (
           <TopRankedHabits navigation={props.navigation} />
         )}
       </View>
